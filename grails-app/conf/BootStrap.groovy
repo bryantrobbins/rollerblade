@@ -1,9 +1,12 @@
+import rollerblade.Sponsor
+import rollerblade.Sponsorship
 import rollerblade.TekEvent
 import rollerblade.TekUser
 
 class BootStrap {
 
-	def init = { servletContext ->
+	def init = {
+		servletContext ->
 		new TekUser(fullName: 'John Doe',
 		userName: 'jdoe',
 		password: 't0ps3cr3t',
@@ -39,7 +42,9 @@ class BootStrap {
 						Camp.''')
 
 		if(!event1.save()){
-			event1.errors.allErrors.each{error -> println "An error occured with event1: ${error}" }
+			event1.errors.allErrors.each{
+				error -> println "An error occured with event1: ${error}"
+			}
 		}
 
 		def event2 = new TekEvent(name: 'Perl Before Swine',
@@ -58,7 +63,9 @@ class BootStrap {
 						there!''')
 
 		if(!event2.save()){
-			event2.errors.allErrors.each{error -> println "An error occured with event2: ${error}" }
+			event2.errors.allErrors.each{
+				error -> println "An error occured with event2: ${error}"
+			}
 		}
 
 		def g1 = TekEvent.findByName('Gateway Code Camp')
@@ -82,6 +89,25 @@ class BootStrap {
 		g1.addToRespondents('solomon@bootstrapwelding.com')
 
 		g1.save()
+
+		def s1 = new Sponsor(name:'Contegix',
+		website:'http://www.contegix.com',
+		description:'Beyond Managed Hosting for your Enterprise').save()
+
+		def s2 = new Sponsor(name:'Object Computing Incorporated',
+		website:'http://ociweb.com',
+		description:'An OO Software Engineering Company'
+		).save()
+		
+		def sp1 = new Sponsorship(event:g1,
+		sponsor:s1,
+		contributionType:'Other',
+		description:'Cool T-Shirts').save()
+		
+		def sp2 = new Sponsorship(event:g1,
+		sponsor:s2,
+		contributionType:'Venue',
+		description:'Will be paying for the Moscone').save()
 	}
 
 	def destroy = {
